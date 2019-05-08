@@ -26,3 +26,16 @@ class LianjiaItem(scrapy.Item):
     unitPrice = scrapy.Field()  # 单价
     age = scrapy.Field()  # 房屋年限
     url = scrapy.Field()  # url
+    houserecord = scrapy.Field()  # 链家编号
+    commprice = scrapy.Field()  # 小区均价
+
+
+class CommunityItem(scrapy.Item):
+    age = scrapy.Field()   # 小区建筑年代
+    name = scrapy.Field()  # 小区名称
+    sellinfo = scrapy.Field()  # 成交信息
+    price = scrapy.Field()  # 均价
+    onsell = scrapy.Field()  # 在售
+    position = scrapy.Field()  # 位置
+    position2 = scrapy.Field()  # 位置2
+    remark = scrapy.Field()  # 备注
