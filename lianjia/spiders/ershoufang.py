@@ -6,7 +6,7 @@ from lianjia.items import LianjiaItem
 class LianjiaSpider(scrapy.Spider):
     name = 'ershoufang'
     allowed_domains = ['lianjia.com']
-    start_urls = ['https://qd.lianjia.com/ershoufang/pg' + str(i) for i in range(1, 2)]  # 100页
+    start_urls = ['https://qd.lianjia.com/ershoufang/pg' + str(i) for i in range(1, 100)]  # 100页
 
     def parse(self, response):
         for url in response.xpath('//div[@class="info clear"]//div[@class="title"]//a//@href'):

@@ -13,7 +13,7 @@ class CommunityspiderSpider(scrapy.Spider):
         details = CommunityItem()
         for each in response.xpath('//li[@class="clear xiaoquListItem"]'):
             details['name'] = each.xpath('div[@class="info"]/div[@class="title"]/a/text()').extract()[0]
-            details['age'] = re.search(r'.*(\d{4})年建成.*', ''.join(each.xpath('div[@class="info"]/div[@class="positionInfo"]/text()').extract())).group(1)
+            details['age'] = re.search(r'.*(\d{4}|未知)年建成.*', ''.join(each.xpath('div[@class="info"]/div[@class="positionInfo"]/text()').extract())).group(1)
             details['sellinfo'] = re.search(r'90天成交(\d+)套', each.xpath('div[@class="info"]/div[@class="houseInfo"]/a[1]/text()').extract()[0]).group(1)
             details['position'] = each.xpath('div[@class="info"]/div[@class="positionInfo"]/a[1]/text()').extract()[0]
             details['position2'] = each.xpath('div[@class="info"]/div[@class="positionInfo"]/a[2]/text()').extract()[0]
