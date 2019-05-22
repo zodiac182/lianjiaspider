@@ -20,4 +20,5 @@ class CommunityspiderSpider(scrapy.Spider):
             details['price'] = ''.join(each.xpath('div[@class="xiaoquListItemRight"]//div[@class="totalPrice"]//text()').extract())
             details['remark'] = each.xpath('div[@class="xiaoquListItemRight"]//div[@class="priceDesc"]/text()').extract()[0].replace(' ', '').replace('\n', '')
             details['onsell'] = ''.join(each.xpath('div[@class="xiaoquListItemRight"]//div[@class="xiaoquListItemSellCount"]/a/span/text()').extract())
+            details['code'] = ''.join(each.xpath('@data-housecode').extract())
             yield details

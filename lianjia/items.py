@@ -39,3 +39,4 @@ class CommunityItem(scrapy.Item):
     position = scrapy.Field()  # 位置
     position2 = scrapy.Field()  # 位置2
     remark = scrapy.Field()  # 备注
+    code = scrapy.Field()  # 小区代码
