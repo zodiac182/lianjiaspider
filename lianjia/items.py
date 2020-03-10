@@ -29,22 +29,10 @@ class LianjiaItem(scrapy.Item):
     houserecord = scrapy.Field()  # 链家编号
     commprice = scrapy.Field()  # 小区均价
 
-
-class CommunityItem(scrapy.Item):
-    age = scrapy.Field()   # 小区建筑年代
-    name = scrapy.Field()  # 小区名称
-    sellinfo = scrapy.Field()  # 成交信息
-    price = scrapy.Field()  # 均价
-    onsell = scrapy.Field()  # 在售
-    position = scrapy.Field()  # 位置
-    position2 = scrapy.Field()  # 位置2
-    remark = scrapy.Field()  # 备注
-    code = scrapy.Field()  # 小区代码
-    count = scrapy.Field()  # count
-
 class CommItem(scrapy.Item):
     info1 = scrapy.Field()
     info2 = scrapy.Field()
     info3 = scrapy.Field()
-    info4 = scrapy.Field()
+    name = scrapy.Field()
+    price = scrapy.Field()  # 均价
     count = scrapy.Field()
