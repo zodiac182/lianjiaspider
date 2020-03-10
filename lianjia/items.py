@@ -40,3 +40,11 @@ class CommunityItem(scrapy.Item):
     position2 = scrapy.Field()  # 位置2
     remark = scrapy.Field()  # 备注
     code = scrapy.Field()  # 小区代码
+    count = scrapy.Field()  # count
+
+class CommItem(scrapy.Item):
+    info1 = scrapy.Field()
+    info2 = scrapy.Field()
+    info3 = scrapy.Field()
+    info4 = scrapy.Field()
+    count = scrapy.Field()
