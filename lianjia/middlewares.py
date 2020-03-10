@@ -78,7 +78,7 @@ class LianjiaDownloaderMiddleware(object):
         # - or return a Request object
         # - or raise IgnoreRequest: process_exception() methods of
         #   installed downloader middleware will be called
-        request.meta['proxy'] = 'http://135.245.48.34:8000'
+        # request.meta['proxy'] = 'http://135.245.48.34:8000'
         return None
 
     def process_response(self, request, response, spider):
