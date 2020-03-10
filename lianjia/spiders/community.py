@@ -1,25 +1,29 @@
-# -*- coding: utf-8 -*-
 import scrapy
-from lianjia.items import CommunityItem
-import re
+from lianjia.items import CommItem
+import time
 
 
-class CommunityspiderSpider(scrapy.Spider):
-    name = 'community'
+class HouseCount(scrapy.Spider):
+    name = 'comm'
     allowed_domains = ['lianjia.com']
-    start_urls = ['https://qd.lianjia.com/xiaoqu/pg' + str(i) for i in range(1, 30)]
+    #start_urls = ['https://qd.lianjia.com/xiaoqu/1511041295482/']
+    start_urls = ['https://qd.lianjia.com/xiaoqu/pg' + str(i) for i in range(1, 2)]
 
     def parse(self, response):
-        details = CommunityItem()
-        for each in response.xpath('//li[@class="clear xiaoquListItem"]'):
-            details['name'] = each.xpath('div[@class="info"]/div[@class="title"]/a/text()').extract()[0]
-            details['age'] = ''.join(each.xpath('div[@class="info"]/div[@class="positionInfo"]/text()').extract()).replace('\n', '').replace(' ', '')
-            details['sellinfo'] = re.search(r'90.*(\d+).*', each.xpath('div[@class="info"]/div[@class="houseInfo"]/a[1]/text()').extract()[0]).group(1)
-            details['position'] = ''.join(each.xpath('div[@class="info"]/div[@class="positionInfo"]/a[1]/text()').extract())
-            details['position2'] = each.xpath('div[@class="info"]/div[@class="positionInfo"]/a[2]/text()').extract()[0]
-            details['price'] = ''.join(each.xpath('div[@class="xiaoquListItemRight"]//div[@class="totalPrice"]//text()').extract())
-            details['remark'] = each.xpath('div[@class="xiaoquListItemRight"]//div[@class="priceDesc"]/text()').extract()[0].replace(' ', '').replace('\n', '')
-            details['onsell'] = ''.join(each.xpath('div[@class="xiaoquListItemRight"]//div[@class="xiaoquListItemSellCount"]/a/span/text()').extract())
-            details['code'] = ''.join(each.xpath('@data-housecode').extract())
-            details['count'] = (each.xpath('@data-housecode').extract())
-            yield details
+        for url in response.xpath('//ul[@class="listContent"]//li//div[@class="info"]//div[@class="title"]//a//@href'):
+            time.sleep(3)
+            yield scrapy.Request(url=url.extract(), callback=self.parse_detail)
+
+    def parse_detail(self, response):
+        details = CommItem()
+        print(response)
+        details['info1'] = response.xpath('//div[@class="xiaoquDetailbreadCrumbs"]/div[@class="fl l-txt"]/a[2]/text()').extract()
+        details['info2'] = response.xpath('//div[@class="xiaoquDetailbreadCrumbs"]/div[@class="fl l-txt"]/a[3]/text()').extract()
+        details['info3'] = response.xpath('//div[@class="xiaoquDetailbreadCrumbs"]/div[@class="fl l-txt"]/a[4]/text()').extract()
+        details['name'] = response.xpath('//div[@class="xiaoquDetailbreadCrumbs"]/div[@class="fl l-txt"]/a[5]/text()').extract()
+        details['price'] = response.xpath('//div[@class="xiaoquPrice clear"]/div[@class="fl"]/span[@class="xiaoquUnitPrice"]/text()').extract()
+        for each in response.xpath('//div[@class="xiaoquInfo"]/div[@class="xiaoquInfoItem"]'):
+            if(each.xpath('span/text()').extract()[0] == "房屋总数"):
+                details['count'] = each.xpath('span/text()').extract()[1][:-1]
+        print(details)
+        yield details
