@@ -20,7 +20,10 @@ class HouseCount(scrapy.Spider):
         details['info2'] = response.xpath('//div[@class="xiaoquDetailbreadCrumbs"]/div[@class="fl l-txt"]/a[3]/text()').extract()
         details['info3'] = response.xpath('//div[@class="xiaoquDetailbreadCrumbs"]/div[@class="fl l-txt"]/a[4]/text()').extract()
         details['name'] = response.xpath('//div[@class="xiaoquDetailbreadCrumbs"]/div[@class="fl l-txt"]/a[5]/text()').extract()
-        details['price'] = response.xpath('//div[@class="xiaoquPrice clear"]/div[@class="fl"]/span[@class="xiaoquUnitPrice"]/text()').extract()
+        try:
+            details['price'] = int(response.xpath('//div[@class="xiaoquPrice clear"]/div[@class="fl"]/span[@class="xiaoquUnitPrice"]/text()').extract())
+        except:
+            details['price'] = 0
         for each in response.xpath('//div[@class="xiaoquInfo"]/div[@class="xiaoquInfoItem"]'):
             if(each.xpath('span/text()').extract()[0] == "房屋总数"):
                 details['count'] = each.xpath('span/text()').extract()[1][:-1]
