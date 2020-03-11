@@ -30,9 +30,8 @@ class LianjiaItem(scrapy.Item):
     commprice = scrapy.Field()  # 小区均价
 
 class CommItem(scrapy.Item):
-    info1 = scrapy.Field()
-    info2 = scrapy.Field()
-    info3 = scrapy.Field()
+    district = scrapy.Field()  #
+    bizcircle = scrapy.Field()  #
     name = scrapy.Field()
     price = scrapy.Field()  # 均价
-    count = scrapy.Field()
+    sell_count = scrapy.Field()

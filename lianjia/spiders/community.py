@@ -11,19 +11,15 @@ class HouseCount(scrapy.Spider):
     start_urls = ['https://qd.lianjia.com/xiaoqu/pg' + str(i) for i in range(1, 31)]
 
     def parse(self, response):
-        for url in response.xpath('//ul[@class="listContent"]//li//div[@class="info"]//div[@class="title"]//a//@href'):
-            yield scrapy.Request(url=url.extract(), callback=self.parse_detail)
+        for each in response.xpath('//ul[@class="listContent"]/li'):
+            details = CommItem()
+            details['district'] = response.xpath('div[@class="positionInfo"]/a[1]/text()').extract()[0]
+            details['bizcircle'] = response.xpath('div[@class="positionInfo"]/a[2]/text()').extract()[0]
+            details['name'] = response.xpath('div[@class="info"]/div[@class="title"]/a/text()').extract()[0]
+            try:
+                details['price'] = int(response.xpath('div[@class="xiaoquListItemRight"]/div[@class="xiaoquListItemPrice"]/div[@class="totalPrice"]/span[1]/text()').extract()[0])
+            except:
+                details['price'] = 0
+            details['sell_count'] = int(response.xpath('div[@class="xiaoquListItemRight"]/div[@class="xiaoquListItemSellCount"]/a[1]/span[1]/text()').extract()[0][:-1])
 
-    def parse_detail(self, response):
-        details = CommItem()
-        details['info1'] = response.xpath('//div[@class="xiaoquDetailbreadCrumbs"]/div[@class="fl l-txt"]/a[2]/text()').extract()[0]
-        details['info2'] = response.xpath('//div[@class="xiaoquDetailbreadCrumbs"]/div[@class="fl l-txt"]/a[3]/text()').extract()[0]
-        details['info3'] = response.xpath('//div[@class="xiaoquDetailbreadCrumbs"]/div[@class="fl l-txt"]/a[4]/text()').extract()[0]
-        details['name'] = response.xpath('//div[@class="xiaoquDetailbreadCrumbs"]/div[@class="fl l-txt"]/a[5]/text()').extract()[0]
-        try:
-            details['price'] = int(response.xpath('//div[@class="xiaoquPrice clear"]/div[@class="fl"]/span[@class="xiaoquUnitPrice"]/text()').extract()[0])
-        except:
-            details['price'] = 0
-        details['count'] = response.xpath('//div[@class="xiaoquInfo"]/div[7]/span[2]/text()').extract()[0][:-1]
-
-        yield details
+            yield details
