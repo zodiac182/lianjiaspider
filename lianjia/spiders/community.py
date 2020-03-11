@@ -12,7 +12,6 @@ class HouseCount(scrapy.Spider):
 
     def parse(self, response):
         for url in response.xpath('//ul[@class="listContent"]//li//div[@class="info"]//div[@class="title"]//a//@href'):
-            time.sleep(3)
             yield scrapy.Request(url=url.extract(), callback=self.parse_detail)
 
     def parse_detail(self, response):
