@@ -24,8 +24,6 @@ class HouseCount(scrapy.Spider):
             details['price'] = int(response.xpath('//div[@class="xiaoquPrice clear"]/div[@class="fl"]/span[@class="xiaoquUnitPrice"]/text()').extract()[0])
         except:
             details['price'] = 0
-        for each in response.xpath('//div[@class="xiaoquInfo"]/div[@class="xiaoquInfoItem"]'):
-            if(each.xpath('span/text()').extract()[0] == "房屋总数"):
-                details['count'] = each.xpath('span/text()').extract()[1][:-1]
-        print(details)
+        details['count'] = response.xpath('//div[@class="xiaoquInfo"]/div[7]/span[2]/text()').extract()[0][:-1]
+
         yield details
